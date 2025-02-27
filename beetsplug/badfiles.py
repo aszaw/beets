@@ -21,6 +21,7 @@ import sys
 from subprocess import STDOUT, CalledProcessError, check_output, list2cmdline
 
 import confuse
+import chardet
 
 from beets import importer, ui
 from beets.plugins import BeetsPlugin
@@ -123,7 +124,7 @@ class BadFiles(BeetsPlugin):
             return []
         path = item.path
         if not isinstance(path, str):
-            path = item.path.decode(sys.getfilesystemencoding())
+            path = item.path.decode(chardet.detect(item.path)['encoding'])
         try:
             status, errors, output = checker(path)
         except CheckerCommandError as e:
