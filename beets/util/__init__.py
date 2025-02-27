@@ -415,6 +415,8 @@ def bytestring_path(path: PathLike) -> bytes:
         return str_path.encode(_fsencoding())
     except (UnicodeError, LookupError):
         return str_path.encode("utf-8")
+    except (UnicodeEncodeError):
+        return str_path.encode("utf-8", "surrogateescape")
 
 
 PATH_SEP: bytes = bytestring_path(os.sep)
